@@ -212,6 +212,21 @@ function _gemm_contract!(
   return C
 end
 
+function contract!(
+  R::CuDenseTensor{ElR,NR},
+  labelsR,
+  T1::CuDenseTensor{ElT1,N1},
+  labelsT1,
+  T2::CuDenseTensor{ElT2,N2},
+  labelsT2,
+  α::Elα=one(ElR),
+  β::Elβ=zero(ElR),
+) where {Elα,Elβ,ElR,ElT1,ElT2,NR,N1,N2}
+  props = ContractionProperties(labelsT1, labelsT2, labelsR)
+  compute_contraction_properties!(props, T1, T2, R)
+  R = _contract!(R, T1, T2, props, α, β)
+end
+
 function _contract!(
   CT::CuDenseTensor{El,NC},
   AT::CuDenseTensor{El,NA},
