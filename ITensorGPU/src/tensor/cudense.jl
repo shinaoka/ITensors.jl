@@ -222,9 +222,10 @@ function contract!(
   α::Elα=one(ElR),
   β::Elβ=zero(ElR),
 ) where {Elα,Elβ,ElR,ElT1,ElT2,NR,N1,N2}
-  props = ContractionProperties(labelsT1, labelsT2, labelsR)
-  compute_contraction_properties!(props, T1, T2, R)
-  R = _contract!(R, T1, T2, props, α, β)
+_contract!(R, labelsR,
+  T1, labelsT1,
+  T2, labelsT2,
+  α, β)
 end
 
 function _contract!(
